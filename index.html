@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="description"
+        content="CVAT Data Management Module for Odoo - User Guide. Learn how to manage local datasets, integrate with CVAT servers, synchronize projects, and more." />
+    <meta name="keywords"
+        content="CVAT, Odoo, Data Management, Computer Vision, Annotation Tool, Dataset, Integration, Synchronization, Project, Task, Image" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .mb-5 {
+            margin-bottom: 3rem;
+        }
+
+        .container {
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .px-0 {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        .mt-3 {
+            margin-top: 3rem;
+        }
+
+        .my-2 {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .py-1 {
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
+
+        .px-1 {
+            padding-left: 0.25rem;
+            padding-right: 0.25rem;
+        }
+
+        .ql-indent-1 {
+            padding-left: 1.5em;
+        }
+
+        .mb-1 {
+            margin-bottom: 0.25rem;
+        }
+
+        .my-3 {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mb-5">
+        <h1>CVAT Data Management Module for Odoo - User Guide</h1>
+        <nav>
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#key-features">Key Features</a>
+                    <ul>
+                        <li><a href="#local-dataset-management">Local Dataset Management</a></li>
+                        <li><a href="#cvat-server-integration">CVAT Server Integration</a></li>
+                        <li><a href="#cvat-project-synchronization">CVAT Project Synchronization</a></li>
+                        <li><a href="#cvat-task-integration">CVAT Task Integration</a></li>
+                        <li><a href="#cvat-task-image-tracing">CVAT Task Image Tracing</a></li>
+                    </ul>
+                </li>
+                <li><a href="#operations">Operations</a>
+                    <ul>
+                        <li><a href="#authorization-information">Authorization Information</a></li>
+                        <li><a href="#setting-up-volume-mapping">Setting Up Volume Mapping</a></li>
+                        <li><a href="#managing-local-dataset">Managing Local Dataset</a></li>
+                        <li><a href="#setting-up-cvat-server">Setting Up CVAT Server</a></li>
+                        <li><a href="#manage-cvat-project">Manage CVAT Project</a></li>
+                        <li><a href="#manage-cvat-tasks">Manage CVAT Tasks</a></li>
+                        <li><a href="#browsing-cvat-image">Browsing CVAT Image</a></li>
+                        <li><a href="#managing-cronjobs">Managing Scheduled Actions</a></li>
+                    </ul>
+                </li>
+                <li><a href="#troubleshooting">Troubleshooting</a>
+                    <ul>
+                        <li><a href="#common-issues">Common Issues</a></li>
+                        <li><a href="#solutions">Solutions</a></li>
+                        <li><a href="#best-practices">Best Practices</a></li>
+                    </ul>
+                </li>
+                <li><a href="#about">About</a>
+                    <ul>
+                        <li><a href="#changelogs">Changelogs</a></li>
+                        <li><a href="#contacts">Contact</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!--Overview -->
+        <div id="overview">
+            <div class="my-2 py-1 px-1" style="background-color: lightgray; font-size: x-large;">
+                <strong>Overview and installation guide</strong>
+            </div>
+            <p>
+                <strong>Odoo</strong> is a low-code, open-source suite of business tools that simplifies operations with
+                drag-and-drop customization and pre-built modules, making it accessible to users without programming
+                expertise.
+            </p>
+            <p>
+                This module optimizes <strong>CVAT</strong> (Computer Vision Annotation Tool) workflows by integrating
+                local data management with CVAT's cloud services. It addresses issues like limited search, poor
+                organization, and lack of local tracking. Compatible with Odoo 16 and later, it is ideal for managing
+                large-scale annotation projects with ease and efficiency.
+            </p>
+            <h4>Installation guide</h4>
+            <p>Refer to the following links for Odoo installation instructions:</p>
+            <ul>
+                <li><a href="https://www.odoo.com/documentation/16.0/administration/on_premise/packages.html"
+                        target="_blank">Install from packaged installers</a></li>
+                <li><a href="https://www.odoo.com/documentation/16.0/administration/on_premise/source.html"
+                        target="_blank">Directly run Odoo source code</a></li>
+                <li><a href="https://www.digitalocean.com/community/tutorials/how-to-install-odoo-with-docker-on-ubuntu"
+                        target="_blank">Install Odoo on Docker environment</a></li>
+                <li><a href="https://azdigi.com/blog/en/azdigi-guide/vps-en/instructions-for-installing-odoo-with-docker/"
+                        target="_blank">Install Odoo on Docker environment in a simpler way</a></li>
+            </ul>
+
+            <h4>2. Install Required Packages</h4>
+            <p>Run the following command to install the required packages:</p>
+            <code>pip install cvat-sdk==2.21.0 aiofiles==24.1.0</code>
+
+            <h4>3. Install the imageset-cvat Odoo Module</h4>
+            <p>Download and install the module from the following link:
+                <a href="https://apps.odoo.com/apps/modules/16.0/imageset-cvat" target="_blank">Imageset-CVAT Odoo
+                    Module</a>
+            </p>
+        </div>
+        <!--Key features -->
+        <div id="key-features">
+            <div class="my-2 py-1 px-1" style="background-color: lightgray; font-size: x-large;">
+                <strong>Key Features</strong>
+            </div>
+            <h4 id="local-dataset-management">1. Local dataset Management</h4>
+            <ul>
+                <li>Manage local datasets (single-level image folders)</li>
+                <li>Automatic file counting and verification</li>
+                <li>Dataset integrity checking</li>
+            </ul>
+            <h4 id="cvat-server-integration">2. CVAT Server Integration</h4>
+            <ul>
+                <li>Add and manage multiple CVAT server connections</li>
+                <li>Store and secure CVAT credentials</li>
+                <li>Test connection functionality</li>
+                <li>Checkout (import) CVAT projects</li>
+            </ul>
+            <h4 id="cvat-project-synchronization">3. CVAT Project Synchronization</h4>
+            <ul>
+                <li>Synchronize project information</li>
+                <li>Checkout (import) CVAT tasks</li>
+                <li>Submit local dataset for task</li>
+                <li>Manage project metadata</li>
+            </ul>
+            <h4 id="cvat-task-integration">4. CVAT Task Integration</h4>
+            <ul>
+                <li>Monitor task status</li>
+                <li>Synchronize task information and images</li>
+                <li>Track annotation progress</li>
+            </ul>
+            <h4 id="cvat-task-image-tracing">5. CVAT Task Image Tracing</h4>
+            <ul>
+                <li>List and search CVAT task images</li>
+                <li>Find corresponding location in local machine</li>
+            </ul>
+        </div>
+        <!-- Basic operations -->
+        <div>
+            <div class="my-2 py-1 px-1" id="operations" style="background-color: lightgray; font-size: x-large;">
+                <strong>Operations</strong>
+            </div>
+            <!-- Authorization info -->
+            <div class="my-2">
+                <h4 id="authorization-information">1. Authorization information</h4>
+                <p>To configure volume mapping, Adminstration role is necessary. However, all other operations can
+                    be carried out by users assigned to the Odat user group. For a quick start, you can use the
+                    pre-defined user account: odat-user@example.com with the password "odatuser$123".
+                </p>
+                <img src="./images/auth_user.gif" style="width: 75%;" alt="Auth user" />
+            </div>
+            <!-- Volume mapping -->
+            <div class="my-2">
+                <h4 id="setting-up-volume-mapping">2. Setting Up Volume Mapping (for the case working on Docker
+                    Container)</h4>
+                <img src="./images/setting_volume_mapping.gif" style="width: 75%;" alt="Volume Mapping Example" />
+            </div>
+            <!-- Dataset -->
+            <div class="my-2">
+                <h4 id="managing-local-dataset">3. Managing Local Dataset</h4>
+                <div class="my-1">
+                    <p class="mb-1">3.1 Create new dataset</p>
+                    <img src="./images/dataset_new.gif" alt="Create new dataset" style="width: 75%" />
+                </div>
+                <div class="my-1">
+                    <p class="mb-1">3.2 View and edit existing dataset</p>
+                    <img src="./images/dataset_details.gif" alt="View/edit existing dataset" style="width: 75%" />
+                </div>
+            </div>
+            <!-- CVAT Server -->
+            <div class="my-2">
+                <h4 id="setting-up-cvat-server">4. Setting Up CVAT Server</h4>
+                <div class="my-1">
+                    <p class="mb-1">4.1 Create new CVAT Server with credential information</p>
+                    <img src="./images/cvat_server_new.gif" alt="Create new record for CVAT server"
+                        style="width: 75%" />
+                </div>
+                <div class="my-1">
+                    <p class="mb-1">4.2 View and test connection</p>
+                    <img src="./images/cvat_server_test_connection.gif" alt="Test connection to CVAT server"
+                        style="width: 75%" />
+                </div>
+                <div class="my-1">
+                    <p class="mb-1">4.3 Checkout project(s)</p>
+                    <img src="./images/cvat_server_checkout_project.gif" alt="Checkout project from CVAT server"
+                        style="width: 75%" />
+                </div>
+            </div>
+            <!-- CVAT project -->
+            <div class="my-2">
+                <h4 id="manage-cvat-project">5. Manage CVAT project</h4>
+                <div class="my-1">
+                    <p class="mb-1">5.1 List checked out CVAT projects</p>
+                    <img src="./images/cvat_projects.gif" alt="List CVAT projects" style="width: 75%" />
+                </div>
+                <div class="my-1">
+                    <p class="mb-1">5.2 Synchronize information from CVAT</p>
+                    <img src="./images/cvat_project_sync_info.gif" alt="Synchronize information from CVAT"
+                        style="width: 75%" />
+                </div>
+                <div class="my-1">
+                    <p class="mb-1">5.3 Checkout one CVAT task</p>
+                    <img src="./images/cvat_project_checkout_one_task.gif" alt="Checkout one task from CVAT"
+                        style="width: 75%" />
+                </div>
+                <div class="my-1">
+                    <p class="mb-1">5.4 Checkout all CVAT tasks</p>
+                    <img src="./images/cvat_project_checkout_all_tasks.gif" alt="Checkout all tasks from CVAT"
+                        style="width: 75%" />
+                </div>
+                <div class="my-1">
+                    <p class="mb-1">5.5 Submit new task to CVAT</p>
+                    <img src="./images/cvat_project_submit_task.gif" alt="Submit task to CVAT" style="width: 75%" />
+                </div>
+            </div>
+            <!-- CVAT task -->
+            <div class="my-2">
+                <h4 id="manage-cvat-tasks">6. Manage CVAT Tasks</h4>
+                <div class="my-1">
+                    <p class="mb-1">6.1 List submitted/checked out CVAT tasks</p>
+                    <img src="./images/cvat_tasks.gif" alt="List CVAT tasks" style="width: 75%" />
+                </div>
+                <div class="my-1">
+                    <p class="mb-1">6.2 Synchronize CVAT task</p>
+                    <img src="./images/cvat_task_sync.gif" alt="Synchronize CVAT task" style="width: 75%" />
+                </div>
+            </div>
+            <!-- CVAT images -->
+            <div class="my-2">
+                <h4 id="browsing-cvat-image">7. Browsing CVAT image</h4>
+                <div class="my-1">
+                    <p class="mb-1">7.1 List synchronized CVAT images</p>
+                    <img src="./images/cvat_images.gif" alt="List CVAT images" style="width: 75%" />
+                </div>
+                <div class="my-1">
+                    <p class="mb-1">7.2 Show details of CVAT image</p>
+                    <img src="./images/cvat_image_detail.gif" alt="CVAT image detail" style="width: 75%" />
+                </div>
+            </div>
+            <!-- Cronjobs -->
+            <div class="my-2">
+                <h4 id="managing-cronjobs">8. Managing Scheduled Actions</h4>
+                <div class="my-1">
+                    <p class="mb-1">8.1 List scheduled actions</p>
+                    <img src="./images/cvat_scheduled_actions.gif" alt="List scheduled actions" style="width: 75%" />
+                </div>
+                <div class="my-1">
+                    <p class="mb-1">8.2 Show/edit details of scheduled action</p>
+                    <img src="./images/cvat_scheduled_action_detail.gif" alt="Scheduled action detail"
+                        style="width: 75%" />
+                </div>
+            </div>
+        </div>
+        <!-- Others -->
+        <div id="troubleshooting">
+            <div class="my-3 py-1 px-1" style="background-color: lightgray; font-size: x-large;">
+                <strong>Troubleshooting</strong>
+            </div>
+            <h4 id="common-issues">Common Issues</h4>
+            <ul>
+                <li>Path mapping errors in Docker environment</li>
+                <li>Connection timeout with CVAT server</li>
+                <li>File permission issues</li>
+            </ul>
+            <h4 id="solutions">Solutions</h4>
+            <ul>
+                <li>Verify Docker volume mappings</li>
+                <li>Check CVAT server status and credentials</li>
+                <li>Ensure proper file permissions</li>
+                <li>Review synchronization logs</li>
+            </ul>
+            <h4 id="best-practices">Best Practices</h4>
+            <ul>
+                <li>Regularly backup local data</li>
+                <li>Maintain consistent folder structure</li>
+                <li>Use meaningful names for datasets</li>
+                <li>Keep CVAT credentials secure</li>
+            </ul>
+        </div>
+        <!-- About -->
+        <div id="about">
+            <div class="my-3 py-1 px-1" style="background-color: lightgray; font-size: x-large;">
+                <strong>About</strong>
+            </div>
+            <h4 id="changelogs">Changelogs</h4>
+            <ul>
+                <li>Version 1.0.1: Initial distribution with basic functions</li>
+            </ul>
+            <h4 id="contacts">Contact</h4>
+            <ul>
+                <li>For technical support or further assistance, please contact system administrator <span
+                        class="email">odoocvat2025</span>[at]<span>gmail</span>&#46;<span>com</span>. Or create an issue
+                    at <a
+                        href="https://github.com/wws2003/odoocvat-public/issues">https://github.com/wws2003/odoocvat-public/issues</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
